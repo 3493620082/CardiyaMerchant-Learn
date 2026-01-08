@@ -1,0 +1,33 @@
+{
+    "gender": "先生",
+    "age": 18,
+    "money": 50,
+    "lv": 1,
+    "exp": 0,
+    "attributes": {
+        "打探": 1,
+        "学识": 2,
+        "魅力": 0,
+        "鉴定": 0,
+        "人脉": 1,
+        "辎重": 0,
+        "贷款": 0
+    },
+    "team_config": {
+        "packhorse": 2,
+        "weight": 100
+    },
+    "carried_items": [
+        {
+            "item": {
+                "item_id": 1,
+                "item_name": "黄金项链",
+                "desc": "黄金制成的项链，极为贵重",
+                "price": 1000.0,
+                "weight": 0.1,
+                "type": "奢侈品"
+            },
+            "quantity": 1
+        }
+    ]
+}

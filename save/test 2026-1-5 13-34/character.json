@@ -1,0 +1,19 @@
+{
+    "gender": "",
+    "age": 20,
+    "money": 0,
+    "attributes": {
+        "打探": 0,
+        "学识": 0,
+        "魅力": 0,
+        "鉴定": 0,
+        "人脉": 0,
+        "辎重": 0,
+        "贷款": 0
+    },
+        "team_config": {
+        "packhorse": 0,
+        "weight": 0
+    },
+    "carried_items": []
+}
