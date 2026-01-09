@@ -6,6 +6,7 @@
 
 import os
 import json
+from src.const import *
 
 class Map:
     def __init__(self):
@@ -19,9 +20,6 @@ class Map:
         for file_name in os.listdir("media\\block\\"):
             with open(f'media\\block\\{file_name}', 'r', encoding="utf-8") as f:
                 self.all_block.append(json.load(f))
-        # 城市数据
-        with open("src\\data\\city_data.json", 'r', encoding="utf-8") as f:
-            self.city_data = json.load(f)
         # 为所有区块中的display中的城市拼接id
         self.add_id_for_city()
         # 更新display
@@ -34,13 +32,14 @@ class Map:
             for j in range(len(display)):  # 遍历display
                 line = display[j]  # 取出行
                 if len(line) != 0:  # 行的长度不为0说明有城市存在
-                    name = line.strip()  # 去除首位空格
-                    # 查找匹配的id
-                    for k, v in self.city_data.items():
-                        if self.city_data[k]["attr"]["name"] == name:
+                    city = line.strip()  # 去除首位空格得到城市名
+                    # 查找城市的id
+                    for k in CITY_DATA.keys():
+                        if CITY_DATA[k]["attr"]["name"] == city:
                             line += f'({k})'
-                            self.all_block[i]["display"][j] = line  # 当前区块下的display列表中的第j行重新赋值为拼接拼接好城市id的新行
                             break
+                    # 更换display的行为修改后的行
+                    self.all_block[i]["display"][j] = line
                 # 这一级的循环因为需要查找所有行找城市所以不能在中途结束
             # 这一级的循环也是因为需要遍历所有区块所以不能中途结束
 
@@ -68,8 +67,8 @@ class Map:
                 self.now_block = block  # 取出当前区块
                 self.now_towns.clear()  # 清空当前城市字典
                 for town in self.now_block["towns"]:  # 遍历当前区块中的所有城市
-                    for k, v in self.city_data.items():
-                        if self.city_data[k]["attr"]["name"] == town:
+                    for k, v in CITY_DATA.items():
+                        if CITY_DATA[k]["attr"]["name"] == town:
                             self.now_towns[k] = town  # 添加键位id值为城市名的键值对到当前城市字典中
                             break
                 # 更新显示
@@ -99,7 +98,7 @@ class Map:
         # 更新地图
         self.update_display()
 
-    def get_city_name_from_id(self, _id: str):
+    def get_city_name_by_id(self, _id: str):
         """
         返回城市名
         :param _id: 城市id

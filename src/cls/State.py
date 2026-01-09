@@ -22,6 +22,7 @@ class State:
         self.date = save_data["state"]["date"]
         self.stay_city = save_data["state"]["stay_city"]
         self.action_point = save_data["state"]["action_point"]
+        self.mapped = save_data["state"]["mapped"]
 
     def save_to_save_file(self):
         """
@@ -34,6 +35,7 @@ class State:
             data["date"] = self.date
             data["stay_city"] = self.stay_city
             data["action_point"] = self.action_point
+            data["mapped"] = self.mapped
             json.dump(data, f, ensure_ascii=False, indent=4)
 
 state = State()

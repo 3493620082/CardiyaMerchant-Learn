@@ -11,9 +11,13 @@ FIVE_SPACE = " "*5
 with open("config.json", 'r', encoding="utf-8") as f:
     CONFIG = json.load(f)
 
-# 城市
+# 所有城市
 with open("src\\data\\citys.json", 'r', encoding="utf-8") as f:
     CITYS = json.load(f)
+
+# 所有城市的详细属性
+with open("src\\data\\city_data.json", 'r', encoding="utf-8") as f:
+    CITY_DATA = json.load(f)
 
 # 玩家名禁止出现的字符
 PLAYER_NAME_ERROR_CHARS = ('~','`','!','@','#','$','%','^','&','*','(',')','=','+','/','.',',','<','>','?',':',';','{','}','[',']','\\','|',

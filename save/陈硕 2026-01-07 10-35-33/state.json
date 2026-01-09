@@ -5,5 +5,11 @@
         "day": 1
     },
     "stay_city": "珀特洛斯堡",
-    "action_point": 5
+    "action_point": 5,
+    "mapped": [
+        {
+            "id": "101",
+            "city": "珀特洛斯堡"
+        }
+    ]
 }

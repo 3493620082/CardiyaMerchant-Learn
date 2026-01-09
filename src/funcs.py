@@ -182,38 +182,49 @@ def create_save_files(player_name: str, history_choices: dict[str, str], begin_m
     # 将不同的数据写入到不同的文件
     try:
         # =======================base.json=======================
-        base_json = {
-            "create_datetime": create_datetime,
-            "player_name": player_name,
-            "history_choices": history_choices,
-            "is_show_tips": True
-        }
         with open(f"{save_file_dir}\\base.json", 'w', encoding="utf-8") as f:
+            base_json = {
+                "create_datetime": create_datetime,
+                "player_name": player_name,
+                "history_choices": history_choices,
+                "is_show_tips": True
+            }
             json.dump(base_json, f, ensure_ascii=False, indent=4)
         # =======================character.json=======================
-        character_json = {
-            "gender": history_choices["gender"],
-            "age": 18,
-            "money": begin_money,
-            "lv": 1,
-            "exp": 0,
-            "attributes": attributes,
-            "team_config": team_config,
-            "carried_items": carried_items
-        }
         with open(f"{save_file_dir}\\character.json", 'w', encoding="utf-8") as f:
+            character_json = {
+                "gender": history_choices["gender"],
+                "age": 18,
+                "money": begin_money,
+                "lv": 1,
+                "exp": 0,
+                "attributes": attributes,
+                "team_config": team_config,
+                "carried_items": carried_items
+            }
             json.dump(character_json, f, ensure_ascii=False, indent=4)
         # =======================state.json=======================
-        state_json = {
-            "date": {
-                "year": 100,
-                "month": 1,
-                "day": 1
-            },
-            "stay_city": history_choices["city"],
-            "action_point": 5
-        }
         with open(f"{save_file_dir}\\state.json", 'w', encoding="utf-8") as f:
+            state_json = {
+                "date": {
+                    "year": 100,
+                    "month": 1,
+                    "day": 1
+                },
+                "stay_city": history_choices["city"],
+                "action_point": 5,
+                "mapped": []
+            }
+            for k in CITY_DATA.keys():
+                if CITY_DATA[k]["attr"]["name"] == history_choices["city"]:
+                    _id = k
+                    break
+            state_json["mapped"].append(
+                {
+                    "id": _id,
+                    "city": history_choices["city"]
+                }
+            )
             json.dump(state_json, f, ensure_ascii=False, indent=4)
         # =======================honor.json=======================
         with open("src\\data\\honor_temp.json", 'r', encoding="utf-8") as f:  # 读取模板文件中的数据

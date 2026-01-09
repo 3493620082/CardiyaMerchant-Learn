@@ -8,6 +8,18 @@ from src.cls.Player import getPlayer
 from src.cls.State import getState
 from src.cls.Map import getMap
 
+# 人物页
+def gamePage_character():
+    pass
+
+# 仓库页
+def gamePage_warehouse():
+    pass
+
+# 任务页
+def gamePage_task():
+    pass
+
 # 游戏设置页
 def gamePage_setting():
     """
@@ -641,13 +653,13 @@ def gamePage_main():
                 MAP.init_player_location(STATE.stay_city)
             # 人物页
             elif choice == "1":
-                pass
+                gamePage_character()
             # 仓库页
             elif choice == "2":
-                pass
+                gamePage_warehouse()
             # 任务页
             elif choice == "3":
-                pass
+                gamePage_task()
             # 资金页
             elif choice == "4":
                 pass
@@ -658,7 +670,7 @@ def gamePage_main():
             elif choice == "6":
                 pass
         elif choice in MAP.now_towns.keys():  # 判断是否是城市编号
-            print(MAP.get_city_name_from_id(choice))
+            print(MAP.get_city_name_by_id(choice))
             time.sleep(2)
             pass
         return None
