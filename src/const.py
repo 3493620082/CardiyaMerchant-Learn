@@ -7,6 +7,10 @@ import json
 GAME_NAME = "卡迪亚行商"
 FIVE_SPACE = " "*5
 
+# 游戏设置
+with open("config.json", 'r', encoding="utf-8") as f:
+    CONFIG = json.load(f)
+
 # 城市
 with open("src\\data\\citys.json", 'r', encoding="utf-8") as f:
     CITYS = json.load(f)

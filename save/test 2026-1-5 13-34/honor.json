@@ -1,0 +1,74 @@
+{
+    "honors": [
+        {
+            "name": "初出茅庐",
+            "desc": "完成首次跨城镇贸易交易，赚取第一笔金币",
+            "completed": false
+        },
+        {
+            "name": "小镇常客",
+            "desc": "到访瓦兰迪亚帝国、加德王国、诺尔王国、萨哈尔苏丹王国各1个乡镇",
+            "completed": false
+        },
+        {
+            "name": "沙漠行者",
+            "desc": "成功穿越萨哈尔苏丹王国戈壁镇至绿洲镇的戈壁商道",
+            "completed": false
+        },
+        {
+            "name": "贸易能手",
+            "desc": "单次贸易交易利润超过1000金币",
+            "completed": false
+        },
+        {
+            "name": "村庄探索者",
+            "desc": "解锁所有类型的村庄地点（农业、手工业、矿业）",
+            "completed": false
+        },
+        {
+            "name": "北境来客",
+            "desc": "在加德王国凛风镇完成3次以上御寒物资交易",
+            "completed": false
+        },
+        {
+            "name": "炼金学徒",
+            "desc": "在诺尔王国炼金镇成功采购附魔粉末和炼金溶剂",
+            "completed": false
+        },
+        {
+            "name": "远洋商人",
+            "desc": "在瓦兰迪亚帝国加伦港完成海外商品贸易",
+            "completed": false
+        },
+        {
+            "name": "物资大亨",
+            "desc": "单次运输货物总量超过50单位",
+            "completed": false
+        },
+        {
+            "name": "全图探索者",
+            "desc": "到访所有四大王国的首都城市",
+            "completed": false
+        },
+        {
+            "name": "风险交易者",
+            "desc": "成功规避沙盗或税吏抽查，完成高价值违禁品贸易",
+            "completed": false
+        },
+        {
+            "name": "特产收藏家",
+            "desc": "收集齐每个王国的标志性特产（瓦兰迪亚丝绸、加德黑铁、诺尔星木、萨哈尔极品茶叶）",
+            "completed": false
+        },
+        {
+            "name": "冬季商人",
+            "desc": "在加德王国雪矛镇冬季期间完成10次贸易交易",
+            "completed": false
+        },
+        {
+            "name": "百万富翁",
+            "desc": "第纳尔总数超过100000",
+            "completed": false
+        }
+    ]
+}

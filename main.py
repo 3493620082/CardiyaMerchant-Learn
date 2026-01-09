@@ -6,8 +6,6 @@ from src.game import *
 
 class Game:
     def __init__(self):
-        # 读取配置
-        self.CONFIG = read_config()
         # 初始化音乐
         self.init_music_and_sound()
         # 游戏启动界面
@@ -18,13 +16,13 @@ class Game:
     def init_music_and_sound(self):
         mixer.init()
         mixer.music.load("media\\music\\background.ogg")
-        mixer.music.set_volume(self.CONFIG["music_volume"] / 10)
+        mixer.music.set_volume(CONFIG["music_volume"] / 10)
         sound_list = []  # 音效列表，目前为空
 
     def start_game(self):
         clear_screen()
         show_ui("media\\ui\\start_page.txt")
-        time.sleep(self.CONFIG["start_page_dealy_sec"])
+        time.sleep(CONFIG["start_page_dealy_sec"])
         clear_screen()
         show_ui("media\\ui\\start_page_warning.txt")
         input(center_space("按下任意键开始") + "按下任意键开始")
@@ -76,11 +74,11 @@ class Game:
         # 背景故事
         def story():
             clear_screen()
-            print_title(self.CONFIG["game_name"])
+            print_title(CONFIG["game_name"])
             for i in range(3): print()
             print_center_text("是否阅读背景故事(1是/0否)", Fore.YELLOW)
             for i in range(3): print()
-            print_title(self.CONFIG["game_name"])
+            print_title(CONFIG["game_name"])
             choice = input(center_space("选择: ") + "选择: ")
             if choice != "0":  # 不等于0直接播放
                 show_background_story()
@@ -112,7 +110,7 @@ class Game:
             clear_screen()
             print_title("存档列表")
             show_save_files()
-            print_title("选项")
+            print_bottom_title("选项")
             print_center_text("返回主界面: -1")
             print_center_text("根据编号选择存档")
             # 获取存档列表
@@ -126,11 +124,8 @@ class Game:
                     result = confirm_load_save(save_list[choice - 1])
                     if result:
                         break
-                else:  # 所选存档不存在
-                    print("选择的存档不存在!")
-                    time.sleep(2)
             except Exception:
-                print("输入有误!")
+                print("所选存档不存在!")
                 time.sleep(2)
 
         # 读取存档数据并开始游戏
@@ -151,30 +146,30 @@ class Game:
             print(" "*5 + "-  调整字体大小: Ctrl+鼠标滚轮")
             print(" "*5 + "-  设置字体: 右键窗口->属性->字体")
             print()
-            print(" "*5 + "1. 音乐音量[0-10]: " + str(self.CONFIG["music_volume"]))
-            print(" "*5 + "2. 音效音量[0-10]: " + str(self.CONFIG["sound_volume"]))
+            print(" "*5 + "1. 音乐音量[0-10]: " + str(CONFIG["music_volume"]))
+            print(" "*5 + "2. 音效音量[0-10]: " + str(CONFIG["sound_volume"]))
             print(Fore.GREEN, end="")
             print_title("选项")
             print_center_text("返回主界面: -1")
             print_center_text("根据编号选择选项")
             try:
-                choice = int(input("选项选项: "))
+                choice = int(input("     选项选项: "))
                 if choice == -1:  # 返回主界面
                     break
                 elif choice == 1:  # 修改音乐音量
-                    vol = int(input("输入数值: "))
+                    vol = int(input("     输入数值: "))
                     if vol < 0: vol = 0
                     elif vol > 10: vol = 10
-                    self.CONFIG["music_volume"] = vol
+                    CONFIG["music_volume"] = vol
                     mixer.music.set_volume(vol / 10)
-                    write_config(self.CONFIG)
+                    write_config(CONFIG)
                 elif choice == 2:  # 修改音效音量
-                    vol = int(input("输入数值: "))
+                    vol = int(input("     输入数值: "))
                     if vol < 0: vol = 0
                     elif vol > 10: vol = 10
-                    self.CONFIG["sound_volume"] = vol
+                    CONFIG["sound_volume"] = vol
                     # TODO: 等这里有音效了，遍历音效列表中的所有音效，为每个音效设置音量
-                    write_config(self.CONFIG)
+                    write_config(CONFIG)
             except Exception:
                 print("输入有误!")
                 time.sleep(2)

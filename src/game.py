@@ -1,10 +1,85 @@
+import json
 import time
+from pygame import mixer
 
 from src.funcs import *
 from src.const import *
 from src.cls.Player import getPlayer
 from src.cls.State import getState
 from src.cls.Map import getMap
+
+# 游戏设置页
+def gamePage_setting():
+    """
+    为返回页提供的游戏设置页
+    :return: 无
+    """
+    while True:
+        clear_screen()
+        print_title("游戏设置")
+        change_color(Fore.YELLOW)
+        print(" " * 5 + "-  调整字体大小: Ctrl+鼠标滚轮")
+        print(" " * 5 + "-  设置字体: 右键窗口->属性->字体")
+        print()
+        print(" " * 5 + "1. 音乐音量[0-10]: " + str(CONFIG["music_volume"]))
+        print(" " * 5 + "2. 音效音量[0-10]: " + str(CONFIG["sound_volume"]))
+        print(Fore.GREEN, end="")
+        print_title("选项")
+        print_center_text("返回: -1")
+        print_center_text("根据编号选择选项")
+        try:
+            choice = int(input("     选项选项: "))
+            if choice == -1:  # 返回上个页面
+                return
+            elif choice == 1:  # 修改音乐音量
+                vol = int(input("     输入数值: "))
+                if vol < 0:
+                    vol = 0
+                elif vol > 10:
+                    vol = 10
+                CONFIG["music_volume"] = vol
+                mixer.music.set_volume(vol / 10)
+                write_config(CONFIG)
+            elif choice == 2:  # 修改音效音量
+                vol = int(input("     输入数值: "))
+                if vol < 0:
+                    vol = 0
+                elif vol > 10:
+                    vol = 10
+                CONFIG["sound_volume"] = vol
+                # TODO: 等这里有音效了，遍历音效列表中的所有音效，为每个音效设置音量
+                write_config(CONFIG)
+        except Exception:
+            print("输入有误!")
+            time.sleep(2)
+
+# 存档成就页
+def gamePage_honor():
+    """
+    存档成就页
+    :return: 无
+    """
+    # 1、获取当前玩家的存档
+    save_file_dir = getPlayer().save_file_dir
+    # 2、读取honor.json文件
+    with open(f"{save_file_dir}\\honor.json", 'r', encoding="utf-8") as f:
+        honor_json = json.load(f)
+    # 3、显示成就页
+    clear_screen()
+    print_title("存档成就")
+    change_color(Fore.YELLOW)
+    def _():
+        for item in honor_json["honors"]:
+            if item["completed"]:
+                cpd = Fore.GREEN + "[已达成]" + Fore.YELLOW
+            else:
+                cpd = Fore.RED + "[未达成]" + Fore.YELLOW
+            line = FIVE_SPACE + Fore.CYAN + item["name"] + space(90-8-str_length(item["name"])) + cpd + "\n" + FIVE_SPACE + " - " + item["desc"]
+            print(line)
+    _()
+    change_color(Fore.GREEN)
+    print_title("存档成就")
+    input("任意键返回...")
 
 # 退出页
 def gamePage_quit():
@@ -28,13 +103,13 @@ def gamePage_quit():
         print_title(GAME_NAME)
         choice = input(center_space("选择:") + "选择:")
         if choice == "1":
-            return "quit"
+            return "返回主菜单"
         elif choice == "2":
-            pass
+            gamePage_setting()
         elif choice == "3":
-            pass
+            gamePage_honor()
         elif choice == "4":
-            return None
+            return "继续游戏"
 
 # 将玩家选择的经历处理为人物属性
 def handle_choices_to_attribute(choices: dict[str, str]) -> dict[str, int]:
@@ -538,26 +613,30 @@ def gamePage_main():
             print(line2)
         options_menu()
     options = ["1", "2", "3", "4", "5", "6", "7", "W", "A", "S", "D", "w", "a", "s", "d", "Q", "q"]
-    while True:
-        # 清屏
-        clear_screen()
-        # 显示界面
-        print_display()
+    # ====================处理输入====================
+    def return_choice():
+        """
+        处理用户输入，把代码从循环中分离出来方便修改
+        :return: 不同的选择有不同的返回值
+        """
         # 输入选项
         choice = input(center_space("选择:") + "选择:")
         if choice in options:  # 判断是否是选项
             # 移动地图
             if choice in ["W", "w", "S", "s", "A", "a", "D", "d"]:
                 MAP.move(choice)
-            # 打开退出页
+            # 退出页
             elif choice == "Q" or choice == "q":
                 choice = gamePage_quit()
-                if choice == "quit":
+                if choice == "返回主菜单":
                     # 保存游戏存档，并结束循环退回到主菜单
                     PLAYER.save_to_save_file()
                     STATE.save_to_save_file()
-                    break
-            # 回城选项(将地图回到玩家所在城市的地图)
+                    # 返回选择结果
+                    return "back_main_menu"
+                elif choice == "继续游戏":
+                    return None
+            # 回城(将地图重置到玩家所在城市的区块)
             elif choice == "7":
                 MAP.init_player_location(STATE.stay_city)
             # 人物页
@@ -579,6 +658,19 @@ def gamePage_main():
             elif choice == "6":
                 pass
         elif choice in MAP.now_towns.keys():  # 判断是否是城市编号
-            print("选择了" + MAP.get_city_name_from_id(choice))
+            print(MAP.get_city_name_from_id(choice))
             time.sleep(2)
             pass
+        return None
+    # ====================游戏循环====================
+    while True:
+        # 清屏
+        clear_screen()
+        # 显示界面
+        print_display()
+        # 输入操作
+        result = return_choice()
+        if result is None:  # 无关紧要的选择、错误选择或不存在的选择，直接跳过
+            pass
+        elif result == "back_main_menu":
+            break  # 结束循环，后续会自动返回到主菜单

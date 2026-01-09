@@ -10,9 +10,9 @@ import json
 class Map:
     def __init__(self):
         self.now_block_code = "1-1"
-        self.now_towns = {}
         self.row = 1
         self.col = 1
+        self.now_towns = {}
         self.now_block = {}
         # 地图区块
         self.all_block = []
@@ -22,19 +22,27 @@ class Map:
         # 城市数据
         with open("src\\data\\city_data.json", 'r', encoding="utf-8") as f:
             self.city_data = json.load(f)
-        # 为所有城市添加id
-        for i in range(len(self.all_block)):
-            display = self.all_block[i]["display"]
-            for j in range(len(display)):
-                line = display[j]
-                if len(line.strip()) != 0:
-                    city_name = line.strip()
-                    id_str = f'({self.city_data[city_name]["id"]})'
-                    line += id_str
-                display[j] = line
-            self.all_block[i]["display"] = display
+        # 为所有区块中的display中的城市拼接id
+        self.add_id_for_city()
         # 更新display
         self.update_display()
+
+    def add_id_for_city(self):
+        # 为所有区块的display中的城市拼接id
+        for i in range(len(self.all_block)):  # 遍历所有区块
+            display = self.all_block[i]["display"]  # display是一个列表
+            for j in range(len(display)):  # 遍历display
+                line = display[j]  # 取出行
+                if len(line) != 0:  # 行的长度不为0说明有城市存在
+                    name = line.strip()  # 去除首位空格
+                    # 查找匹配的id
+                    for k, v in self.city_data.items():
+                        if self.city_data[k]["attr"]["name"] == name:
+                            line += f'({k})'
+                            self.all_block[i]["display"][j] = line  # 当前区块下的display列表中的第j行重新赋值为拼接拼接好城市id的新行
+                            break
+                # 这一级的循环因为需要查找所有行找城市所以不能在中途结束
+            # 这一级的循环也是因为需要遍历所有区块所以不能中途结束
 
     def init_player_location(self, stay_city: str):
         """
@@ -55,14 +63,15 @@ class Map:
         修改显示内容
         :return: 无
         """
-        for block in self.all_block:
-            if block["block_code"] == self.now_block_code:
-                self.now_block = block
-                # 遍历当前区块中的城市
-                self.now_towns.clear()
-                for town in self.now_block["towns"]:
-                    _id = str(self.city_data[town]["id"])
-                    self.now_towns[_id] = town
+        for block in self.all_block:  # 遍历所有区块
+            if block["block_code"] == self.now_block_code:  # 找到与当前区块坐标相等的区块
+                self.now_block = block  # 取出当前区块
+                self.now_towns.clear()  # 清空当前城市字典
+                for town in self.now_block["towns"]:  # 遍历当前区块中的所有城市
+                    for k, v in self.city_data.items():
+                        if self.city_data[k]["attr"]["name"] == town:
+                            self.now_towns[k] = town  # 添加键位id值为城市名的键值对到当前城市字典中
+                            break
                 # 更新显示
                 self.display = block["display"]
                 break

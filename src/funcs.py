@@ -87,6 +87,9 @@ def load_save_files():
             saves_list.append(f"save\\{name}")
     return saves_list
 
+def space(length: int):
+    return " "*length
+
 def show_save_files():
     """
     打印存档列表
@@ -95,7 +98,7 @@ def show_save_files():
     print(Fore.YELLOW, end="")
     saves_list = load_save_files()
     for i in range(len(saves_list)):
-        line = f"{FIVE_SPACE}{i+1}. " + saves_list[i].replace("save\\", "")
+        line = f"{FIVE_SPACE}{i+1}. " + saves_list[i].replace("save\\", "") + "\n"
         print(line)
     print(Fore.GREEN, end="")
 
@@ -212,6 +215,11 @@ def create_save_files(player_name: str, history_choices: dict[str, str], begin_m
         }
         with open(f"{save_file_dir}\\state.json", 'w', encoding="utf-8") as f:
             json.dump(state_json, f, ensure_ascii=False, indent=4)
+        # =======================honor.json=======================
+        with open("src\\data\\honor_temp.json", 'r', encoding="utf-8") as f:  # 读取模板文件中的数据
+            honor_json = json.load(f)
+        with open(f"{save_file_dir}\\honor.json", 'w', encoding="utf-8") as f:  # 写入
+            json.dump(honor_json, f)
 
         # 返回True代表成功
         return [True, save_file_dir]
